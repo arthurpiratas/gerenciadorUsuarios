@@ -6,7 +6,7 @@ var knex = require('knex')({
       host : '127.0.0.1',
       user : variables.Database.user,
       password : variables.Database.pass,
-      database : 'usertest'
+      database : 'apiusers'
     }
   });
 
