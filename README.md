@@ -1,0 +1,1 @@
+# Api rest full desenvolvida para gerenciar usuários do sistema. Api está sendo desenvolvida através do Node.js e utilizando o express para configuração do servidor e knex para conexão com banco mysql. Api desenvolvida a partir do curso Formação Node.js do guia do programador
