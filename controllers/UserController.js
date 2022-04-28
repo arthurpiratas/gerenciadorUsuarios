@@ -3,6 +3,46 @@ var User = require("../models/User")
 class UserController{
     async index(req, res){}
 
+    async listAll(req, res){
+        try{
+            let users = await User.findAll()
+            res.status(200)
+            res.json(users)
+        }catch(err){
+            res.status(400)
+            res.send("Erro na busca de usuários!")
+        }
+        
+    }
+
+    async listForId(req, res){
+
+        let id =  req.params.id
+
+        
+        if(!isNaN(id)){
+            try{
+                let user = await User.findId(id)
+                if(user == undefined){
+                    res.status(404)
+                    res.send("Usuário não encontrado")
+                }else{
+                    res.status(200)
+                    res.json(user)
+                }
+            }catch(err){
+                res.status(400)
+                res.send("Erro na busca do ID")
+            }
+        }else{
+            res.status(400)
+            res.send("ID inválido")
+        }
+
+        
+        
+    }
+
     async create(req,res){
         let {name, email, password, role} = req.body
         let erros = [] 

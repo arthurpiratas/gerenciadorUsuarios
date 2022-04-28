@@ -3,6 +3,33 @@ const bcrypt = require("bcrypt")
 
 class User {
 
+    async findAll(){
+        try {
+            let result = await knex.select(["id", "name", "email", "role"]).from("users")
+            return result 
+        }catch(err){
+            console.log(err)
+            return []
+        }
+    }
+
+    async findId(id){
+        try {
+            let result = await knex.select(["id", "name", "email", "role"]).where({id: id}).from("users")
+            
+            if(result.length > 0){
+                return result[0]
+            }else{
+                return undefined
+            }
+            
+            
+        }catch(err){
+            console.log(err)
+            return undefined
+        }
+    }
+
     async create(name, email, password, role){
         try{
             let hash = await bcrypt.hash(password,10)
