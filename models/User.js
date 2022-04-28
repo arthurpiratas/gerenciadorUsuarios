@@ -40,7 +40,7 @@ class User {
         
     }
 
-    async findEmail(email){
+    async findEmailExist(email){
         try{
             var result = await knex.select("*").from("users").where({email: email})
             
@@ -52,6 +52,44 @@ class User {
 
         }catch(err){
             console.log(err)
+        }
+    }
+
+    async update(id, email, name, role){
+
+        let user = await this.findId(id)
+
+        if(user != undefined){
+            var edituser = {}; 
+
+            if(email != undefined){
+                if(email != user.email){
+                    let result = await this.findEmailExist(email)
+                    if(!result){
+                        edituser.email = email
+                    }else {
+                        return {status: false, err: "O email já foi cadastrado!"}
+                    }
+                }
+            }
+
+            if(name != undefined){
+                edituser.name = name
+            }
+
+            if(role != undefined){
+                edituser.role = role
+            }
+
+            try{
+                await knex.update(edituser).where({id: id}).from("users")
+                return {status: true}
+            }catch(err){
+                return {status: false, err: err}
+            }
+
+        }else{
+            return {status: false, err: "O usuário não existe!"}
         }
     }
 
