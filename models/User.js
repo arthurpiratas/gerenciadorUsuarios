@@ -30,6 +30,23 @@ class User {
         }
     }
 
+    async findByEmail(email){
+        try {
+            let result = await knex.select(["id", "name", "email", "role"]).where({email: email}).from("users")
+            
+            if(result.length > 0){
+                return result[0]
+            }else{
+                return undefined
+            }
+            
+            
+        }catch(err){
+            console.log(err)
+            return undefined
+        }
+    }
+
     async create(name, email, password, role){
         try{
             let hash = await bcrypt.hash(password,10)
@@ -88,6 +105,23 @@ class User {
                 return {status: false, err: err}
             }
 
+        }else{
+            return {status: false, err: "O usuário não existe!"}
+        }
+    }
+
+    async delete(id){
+
+        let user = await this.findId(id)
+
+        if(user != undefined){
+            try{
+                await knex.delete().where({id: id}).from("users")
+                return {status: true}
+            }catch(err){
+                return {status: false, err: err}
+            }
+            
         }else{
             return {status: false, err: "O usuário não existe!"}
         }
