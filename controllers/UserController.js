@@ -1,4 +1,9 @@
 var User = require("../models/User")
+var jwt = require("jsonwebtoken")
+const variable = require('../bin/configuration/variables.js')
+const bcrypt = require("bcrypt")
+
+const secret = variable.Autentication.secret
 
 class UserController{
     async index(req, res){}
@@ -113,6 +118,33 @@ class UserController{
         }else{
             res.status(404)
             res.send(result.err)
+        }
+    }
+
+    async login(req, res){
+        var {email, password} = req.body
+
+        var user = await User.findByEmail(email)
+
+        if(user != undefined){
+            if(user.email == email){
+                var result = await bcrypt.compare(password, user.password)
+                if(result){
+                    let token = jwt.sign({ email: user.email, role: user.role }, secret);
+                    res.status(200)
+                    res.json({token: token})
+                }else{
+                    res.status(404)
+                    res.json({status: false, messsage: "Crendenciais inválidas!"}) 
+                }
+            }else{
+                res.status(404)
+                res.json({status: false, messsage: "Crendenciais inválidas!"})
+            }   
+        }else{
+            res.status(404)
+            res.json({status: false, messsage: "Crendenciais inválidas!"})
+            
         }
     }
 }
