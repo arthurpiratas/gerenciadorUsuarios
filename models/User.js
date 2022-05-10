@@ -127,6 +127,18 @@ class User {
         }
     }
 
+    async changePassword(newPassword, id, token){
+        let hash = await bcrypt.hash(newPassword,10)
+        try{
+            await knex.update({password: hash}).where({id:id}).from("users")
+            return true
+        }catch(err){
+            return false
+        }
+        
+
+    }
+
 }
 
 module.exports = new User()
