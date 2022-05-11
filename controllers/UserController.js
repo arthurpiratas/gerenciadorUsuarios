@@ -52,16 +52,16 @@ class UserController{
         let {name, email, password, role} = req.body
         let erros = [] 
             
-        if(name == undefined || name == null || name == ""){
+        if(name == undefined || name == null || name == "" || name == " "){
             erros.push({err: "O nome é inválido"})
         }
-        if(email == undefined || email == null || email == ""){
+        if(email == undefined || email == null || email == "" || email == " "){
             erros.push({err: "O e-mail é inválido"})
         }
         if(await User.findEmail(email)){
             erros.push({err: "O e-mail já foi cadastrado"})
         }
-        if(password == undefined || password == null || password == ""){
+        if(password == undefined || password == null || password == "" || password == " "){
             erros.push({err: "O password é inválido"})
         }
         if(role == undefined || role == null || isNaN(role)){
