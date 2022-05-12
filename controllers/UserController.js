@@ -58,7 +58,7 @@ class UserController{
         if(email == undefined || email == null || email == "" || email == " "){
             erros.push({err: "O e-mail é inválido"})
         }
-        if(await User.findEmail(email)){
+        if(await User.findEmailExist(email)){
             erros.push({err: "O e-mail já foi cadastrado"})
         }
         if(password == undefined || password == null || password == "" || password == " "){
