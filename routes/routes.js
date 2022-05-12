@@ -15,5 +15,6 @@ router.delete('/user/:id',AdmionAuth, UserController.delete)
 router.post('/recoverpassword', PassTokenController.recoverPassword)
 router.post('/changepassword', PassTokenController.changePassword)
 router.post('/login', UserController.login)
+router.post('/validate',AdmionAuth, UserController.login)
 
 module.exports = router;
