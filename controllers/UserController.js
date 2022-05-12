@@ -75,13 +75,14 @@ class UserController{
 
             try{
                 await User.create(name, email, password, role)
+				res.status(200)
+				res.send("Usuário criado com sucesso!")
             }catch(err){
-                console.log(err)
+                res.status(400)
+				res.send(err)
             }
-
             
-            res.status(200)
-            res.send("OK")
+            
         }
     }
 
