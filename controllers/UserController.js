@@ -88,20 +88,38 @@ class UserController{
 
     async edit(req, res){
         var {id, name, role, email} = req.body
-
-        var result = await User.update(id, email, name, role)
-        if(result != undefined){
-            if(result.status){
-                res.status(200)
-                res.send("ok")
-            }else{
-                res.status(406)
-                res.send(result.err)
-            }
-        }else{
-            res.status(404)
-            res.send(result.err)
+		
+		let erros = [] 
+            
+        if(name == undefined || name == null || name == "" || name == " "){
+            erros.push({err: "O nome é inválido"})
         }
+        if(email == undefined || email == null || email == "" || email == " "){
+            erros.push({err: "O e-mail é inválido"})
+        }
+		
+		if(erros.length){
+			res.status(406)
+            res.send(erros)
+		}else{
+			var result = await User.update(id, email, name, role)
+			if(result != undefined){
+				if(result.status){
+					res.status(200)
+					res.send("Edição realizada com sucesso!")
+				}else{
+					res.status(406)
+					erros.push({err: result.err})
+					res.send(erros)
+				}
+			}else{
+				res.status(404)
+				erros.push({err: result.err})
+				res.send(erros)
+			}
+		}
+
+        
     }
 
     async delete(req, res){
